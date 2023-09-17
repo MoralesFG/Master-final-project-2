@@ -1,0 +1,999 @@
+/*   
+Theme Name: Food academy
+Theme URI: the-theme's-homepage
+Description: a-brief-description
+Author: your-name
+Author URI: your-URI
+Version: a-number--optional
+.
+General comments/License Statement if any.
+.
+*/
+
+/* ICONOS */
+@font-face {
+    font-family: 'foodacademy';
+    src:url('fonts/foodacademy.woff?ps186b') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+i {
+    font-family: 'foodacademy' !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+}
+
+.ico-fecha::before {
+    content: "\e900";
+}
+
+.ico-flecha::before {
+    content: "\e901";
+}
+
+.ico-logo::before {
+    content: "\e902";
+}
+
+.ico-lupa::before {
+    content: "\e903";
+}
+
+.ico-plazas::before {
+    content: "\e904";
+}
+
+.ico-precio::before {
+    content: "\e905";
+}
+
+.ico-tiempo::before {
+    content: "\e906";
+}
+
+/* variables */
+:root {
+    /* colores */
+    --primary:#FD575E;
+    --white:#ffffff;
+    --grey-900:#262626;
+    --grey-700:#5c5c5c;
+    --grey-500:#949494;
+    --grey-200:#e8e8e8;
+    --grey-100:#f5f5f5;
+    --warning:#ff006b;
+    --sucess:#3df0a5;
+    /* sombras */
+    --sombra-8: 0 0 8px rgba(0 0 0 / 25%);
+    /* fuentes */
+    --lex-20-med: 400 20px 'Lexend Deca', sans-serif;
+    --lex-16-light: 300 16px 'Lexend Deca', sans-serif;
+    --lex-16-med: 500 16px 'Lexend Deca', sans-serif;
+    --lex-14-small: 400 14px 'Lexend Deca', sans-serif;
+    --lex-18-med: 500 18px 'Lexend Deca', sans-serif;
+    --lex-70-med: 400 70px 'Lexend Deca', sans-serif;
+    --lex-var-titulos: 500 calc(20px + 1vw) 'Lexend Deca', sans-serif;
+}
+
+/* RESET */
+ul {list-style: none; margin: 0; padding: 0;}
+a {text-decoration: none; color: var(--primary);}
+a:hover {color: var(--primary);}
+img {max-width: 100%; height: auto;}
+input {outline: none;} /* para quitar sombreado negro que aparece en la caja de búsqueda al hacer focus*/
+h1,h2,h3,h4,h5,h6,p,figure, blockquote {margin: 0;}
+.main {padding-top: 70px;}
+
+/* CLASES DE ESTADO */
+.bg-grey-700 {background-color: var(--grey-700);}
+
+.boton-dark {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 24px;
+    background-color: var(--grey-900);
+    color: var(--white);
+    border-radius: 40px;
+    border: 0;
+}
+
+.boton-dark:hover {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+/* TEMA */
+body {font-family: 'Lexend Deca';}
+
+.cabecera {
+    flex: 0 0 58px; /* para que la cabecera no quede pegada arriba cuando haya contenido */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 8px;
+    left: 0;
+    right: 0;
+    margin: auto; /* truco para centrado perfecto horizontal*/
+    z-index: 800;
+}
+
+.cabecera__fondo { /* para darle un efecto a la cabecera que es como transparente */
+    height: 58px;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: var(--white);
+    background: rgba(255, 255, 255, 0.50);
+    backdrop-filter: blur(4.2px);
+    -webkit-backdrop-filter: blur(4.2px);
+}
+
+.cabecera__logo {
+    width: 40px;
+    z-index: 900;
+}
+
+.cabecera__input {
+    border: 3px solid var(--primary);
+    border-radius: 40px;
+    height: 40px;
+    padding-left: 20px;
+}
+
+.cabecera__input:focus { /* para que cuando escribamos, como que se marque el buscador indicando que estamos ahí */
+    background-color: #e8e8e8;
+}
+
+.cabecera__lupa {
+    border: none;
+    background-color: transparent;
+    font-size: 26px;
+    color: var(--primary);
+    position: absolute; /* esto va acompañado de un position relative en "searchform"*/
+    right: 5px;
+    top: 0px;
+}
+
+.cabecera__burger {
+    height: 50px;
+    width: 50px;
+    background-color: var(--primary);
+    border-radius: 100%;
+    position: fixed;
+    bottom: 30px;
+    left: 0;
+    right: 0; /* para que quede justo en el centro de abajo */
+    margin: auto; /* importante para que se cumpla lo anterior */
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* estos 4 ajustes para los palitos del menú burger */
+    padding: 13px 11px;
+
+    box-shadow: var(--sombra-8); /* para la sombra del burger */
+}
+
+#check {display: none;}
+
+#check:checked ~ .cabecera__nav { /* le decimos que cuando este chequeada se muestre, por defecto estará oculta */
+    display: flex;
+}
+
+#check:checked ~ .cabecera__burger > div:first-child { /* cuando este chequeado, el primer palito cambia de posicion */
+    transform: translateY(10px);
+}
+
+#check:checked ~ .cabecera__burger > div:last-child { /* cuando este chequeado, el último palito cambia de posicion */
+    transform: translateY(-10px);
+}
+
+.cabecera__burger > div {
+    height: 4px;
+    background-color: var(--white);
+    transition: 0.3s; /* para que los palitos del burger tengan efecto */
+}
+
+.cabecera__nav {
+    width: 260px;
+    height: 260px;
+    background-color: var(--primary);
+    position: fixed;
+    border-radius: 14px;
+    
+    bottom: 90px;
+    left: 0;
+    right: 0;
+    margin: auto;  /* mismos ajustes que el burger para que quede centrado y en su sitio */
+    box-shadow: var(--sombra-8);
+
+    justify-content: center;
+    align-items: center; /*para centrar el texto de dentro*/
+    text-align: center;
+
+    display: none; /*para que se oculte antes de hacer clic*/
+    z-index: 999; /* para que el menú de pc no quede detrás del fondo borroso que hemos hecho para el nav */
+}
+
+.cabecera__menu .menu-item {
+    margin: 24px;
+}
+
+.cabecera__menu .menu-item > a {
+    color: var(--white);
+    font: var(--lex-20-med);
+}
+
+/* HOME */
+.heroe__imagen {
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+.heroe__imagen > img {
+    z-index: 40;
+    position: relative;
+}
+
+.heroe__imagen::after {
+    display: block;
+    content: "";
+    width: 300px;
+    height: 150px;
+    background-color: var(--primary);
+    position: absolute;
+    bottom: 0;
+    left: -25px;
+    border-radius: 14px;
+
+}
+
+.intro__imagen > img {
+    width: 200px;
+}
+
+.intro__titulo {
+    color: var(--primary);
+}
+
+
+/* CONTENIDOS */ 
+
+/* hacemos esto para que cualquier tipo de contenido empuje hacia abajo con su margen y no quede todo pegado */
+.contenido h1,
+.contenido figure,
+.contenido p,
+.contenido ul {
+    margin-bottom: 24px;
+}
+
+.contenido ul {
+    list-style: disc;
+    padding-left: 24px;
+}
+
+.contenido blockquote {
+    padding-left: 24px;
+    margin-left: 24px;
+    color: var(--primary);
+    font: var(--lex-16-light);
+    border-left: 5px solid var(--primary);
+}
+
+.contenido ::marker {
+    color: var(--primary); /* para colorear los puntitos de la lista */
+}
+
+/* CATEGORIA APRENDER */
+
+.aprender__titulo {
+    font: var(--lex-var-titulos);
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.aprender__card {
+    border: 2px solid var(--grey-700);
+    border-radius: 14px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    min-height: 150px;
+}
+
+.aprender__card-miniatura img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.aprender__card-contenido {
+    padding: 12px;
+}
+
+.aprender__card-titulo {
+    font: var(--lex-16-med);
+}
+
+.aprender__card-fecha {
+    font: var(--lex-14-small);
+    color: var(--grey-500);
+}
+
+.aprender__card-btn {
+    padding: 4px 8px 4px 5px;
+    background-color: var(--grey-200);
+    border-radius: 30px;
+}
+
+.aprender__card-btn > i {
+    font-size: 20px;
+}
+
+.aprender__card-profesor-nombre {
+    font: var(--lex-14-small);
+}
+
+/* COMER */
+.tarjeta-comer {
+    margin-bottom: 24px;
+    display: block;
+}
+
+.tarjeta-comer__titulo {
+    padding: 16px;
+    font: var(--lex-18-med);
+    color: var(--grey-100);
+}
+
+.comer > div:nth-of-type(1n) .tarjeta-comer {
+    background-color: var(--primary);
+}
+
+.comer > div:nth-of-type(2n) .tarjeta-comer {
+    background-color: var(--grey-900)
+}
+
+.comer > div:nth-of-type(3n) .tarjeta-comer {
+    background-color: #630005;
+}
+
+.comer > div:nth-of-type(4n) .tarjeta-comer {
+    background-color: var(--grey-700)
+}
+
+.comer > div:nth-of-type(5n) .tarjeta-comer {
+    background-color: rgb(157, 0, 157);
+}
+
+/* ARTICULOS */
+
+.single .main {
+    padding-top: 90px; /* de esta forma le decimos que este padding solo ocurra en esta parte del diseño(single), en el resto no lo veremos */
+}
+
+.articulo__imagen {
+    display: block; /* cuando algun ajuste básico falla probamos display block a ver si soluciona */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.articulo__titulo {
+    margin: 24px 0;
+}
+
+.articulo__contenido {
+    margin-bottom: 24px;
+}
+
+/* DATOS */
+
+.profesor {
+    border-top: 2px solid var(--grey-700);
+    border-bottom: 2px solid var(--grey-700);
+    padding: 24px 12px;
+    margin-bottom: 24px;
+}
+
+.profesor__foto {
+    border-radius: 100%;
+    width: 140px;
+}
+
+.profesor__nombre {
+    font: var(--lex-20-med);
+    margin-bottom: 8px;
+}
+
+.profesor-min__foto {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    margin-right: 8px;
+}
+
+.profesor-min__nombre {
+    font: var(--lex-14-small);
+    color: var(--grey-900);
+}
+
+.info {
+    border-bottom: 2px solid var(--grey-700);
+    margin-bottom: 24px;
+}
+
+.info i {
+    font-size: 65px;
+}
+
+.info h3 {
+    font: var(--lex-16-med);
+    text-transform: uppercase;
+}
+
+.info > li {
+    margin-bottom: 24px;
+}
+
+.info p {
+    font: var(--lex-16-light);
+    color: var(--primary);
+}
+
+.info__plazas p::after {
+    content: " puestos";
+}
+
+.info__tiempo p::after {
+    content: " horas";
+}
+
+.info__precio p::after {
+    content: " EUR";
+}
+
+/* PÁGINAS */
+
+.pagina__titulo {
+    font: var(--lex-var-titulos);
+    text-align: center;
+}
+
+/* CONTACTO */
+
+.contacto label {
+    color: var(--grey-900);
+}
+
+.contacto__nombre,
+.contacto__mensaje,
+.contacto__email {
+    border: 2px solid var(--grey-700);
+}
+
+.contacto .form-control:focus {
+    border-color: var(--primary);
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(253, 87, 94, .25);
+}
+
+.contacto__cursos > span {
+    margin-left: 0;
+    margin-right: 16px;
+    display: block; /* para que las opciones se pongan modo columna una debajo de otra en vez de flex */
+}
+
+.contacto__cursos > span label {
+    color: var(--grey-900);
+}
+
+.contacto__mensaje {
+    min-height: 200px;
+}
+
+.contacto .wpcf7-not-valid {
+    border-color: var(--warning); /* para que nuestra caja se ilumine en rojo si no hemos rellenado el contenido, como un aviso */
+}
+
+.contacto .wpcf7-not-valid-tip {
+    color: var(--warning);
+    font: var(--lex-14-small); /* para el texto que nos dice que rellenar los campos son obligatorios, ajustamos tamaño y color */
+}
+
+.contacto .aceptacion {
+    font: var(--lex-14-small);
+}
+
+.contacto .aceptacion .wpcf7-list-item {
+    margin: 0; /* para que la caja del chek de politicas quede bien alineada a la izquierda */
+}
+
+.contacto .aceptacion label {
+    display: flex;
+    align-items: center;
+}
+
+.contacto .aceptacion label span {
+    line-height: 10px;
+    padding-left: 8px;
+}
+
+.contacto .aceptacion a {
+    color: var(--primary);
+}
+
+.contacto .enviar > p {
+    margin-bottom: 0;
+}
+
+.contacto .contacto__btn {
+    display: block;
+    width: 100px;
+    padding: 12px 24px;
+    background-color: var(--grey-900);
+    color: var(--white);
+    border-radius: 40px;
+    border: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+}
+
+
+.contacto .contacto__btn:hover {
+    background-color: var(--primary);
+}
+
+.contacto form .wpcf7-response-output {
+    margin: 0;
+    margin-bottom: 24px;
+    padding: 16px;
+    border: 2px solid var(--grey-700);
+}
+
+.contacto form.sent .wpcf7-response-output {
+    border: 2px solid var(--sucess);
+    background-color: var(--sucess);
+}
+
+/* PIE */
+
+.pie {
+    background-color: var(--grey-700);
+    color: var(--grey-100);
+    text-align: center;
+}
+
+.pie__container {
+    margin-top: 24px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.pie__cita {
+    margin-bottom: 24px;
+}
+
+.pie__cita h4 {
+    margin-bottom: 8px;
+}
+
+.pie__cita > p {
+    font: var(--lex-16-light);
+}
+
+.pie__redes {
+    margin-bottom: 24px;
+}
+
+.pie__menu {
+    display: flex;
+    border-top: 1px solid var(--grey-100);
+    border-bottom: 1px solid var(--grey-100);
+    padding-top: 24px;
+    padding-bottom: 24px;
+    justify-content: space-between;
+}
+
+.pie__menu .menu-item > a {
+    color: var(--grey-100);
+}
+
+.pie__menu .menu-item > a:hover {
+    color: var(--primary);
+}
+
+.pie__copy {
+    font: var(--lex-14-small);
+}
+
+/* PAGINADOR */
+.paginador__numeros .next, 
+.paginador__numeros .prev {
+    display: none;
+} 
+
+.paginador {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.paginador__numeros {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.paginador__anterior {
+    transform: scaleX(-1); /* para darle la vuelta a la flecha */
+}
+
+.paginador__anterior, 
+.paginador__siguiente {
+    font-size: 24px;
+    flex: 0 0 24px;
+}
+
+.paginador__anterior a, 
+.paginador__siguiente a {
+    color: var(--grey-900);
+}
+
+.paginador__numeros {
+    flex: 1; /* no funciona */
+    display: flex;
+}
+
+.paginador__numeros > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    border: 2px solid var(--primary);
+    margin: 0 12px;
+}
+
+.paginador__numeros > span.current,
+.paginador__numeros > *:hover {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+/* ERROR 404 */
+
+.body__image {
+    position: relative;
+    z-index: 0;
+    opacity: 8%;
+    margin-left: 300px;
+
+    min-width: 500px;
+    min-height: 500px;
+}
+
+.articulo__404 {
+    z-index: 1;
+    position: absolute;
+}
+
+.titulo__error {
+    font-size: 60px;
+    font-family: 'Lexend Deca';
+    margin-bottom: -30px;
+
+    display: flex;
+    justify-content: center;
+}
+
+.grupo__error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 0px;
+    margin-bottom: 80px;
+}
+
+.texto__error1 {
+    font-size: 160px;
+    font-family: 'Lexend Deca', sans-serif;
+    translate: 10px;
+}
+
+.logo__error {
+    width: 150px;
+    height: 150px;
+}
+
+.texto__error2 {
+    font-size: 160px;
+    font-family: 'Lexend Deca', sans-serif;
+    translate: -10px;
+}
+
+.texto__back {
+    font-size: 26px;
+    font-family: 'Lexend Deca';
+    text-align: center;
+}
+
+.enlace__back {
+    font-size: 26px;
+    font-family: 'Lexend Deca';
+    color: var(--primary);
+}
+
+.enlace__back:hover {
+    border-bottom: 2px solid var(--primary);
+}
+
+
+/************************************************************************************************************************************************************************************************************************************ MEDIA *******************************************************************************/
+
+/* MEDIA SM */
+@media(min-width: 576px) {
+    .aprender__card-miniatura {
+        height: 160px;
+    }
+
+    .aprender__card-contenido {
+        flex: 1;
+    }
+
+    .aprender__card-btn {
+        margin-top: 12px;
+    }
+} /* fin sm */
+
+
+/* MEDIA MD */
+@media(min-width: 768px) {
+    /* home md*/
+    .heroe__imagen {
+        width: 290px;
+    }
+
+    .heroe__imagen::after {
+        left: -75px;
+        width: 370px;
+    }
+
+    .intro__titulo {
+        font: var(--lex-20-med);
+    }
+
+    /* aprender md */
+    .aprender__titulo {
+        width: 520px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .aprender__card-miniatura {
+        height: 190px;
+    }
+
+    .aprender__card-titulo {
+        font: var(--lex-18-med);
+    }
+
+    .aprender__card-extracto {
+        padding-top: 12px;
+    }
+
+    .paginador__numeros {
+        flex: 0 0 50%;
+    }
+
+
+    /* ERROR 404 MD */
+
+    /* FIN ERROR 404 MD*/
+} /* FIN MD */
+
+
+/* MEDIA LG */
+@media (min-width: 992px) {
+    /* cabecera LG */
+    .cabecera, .cabecera__fondo {
+        height: 68px;
+        top: 0; 
+    }
+    
+    .cabecera__logo {
+        width: auto;
+        flex: 0 0 100px; /* para que el logo pueda coger la medida correcta que queremos, si solo le damos width se queda más pequeño */
+    }
+
+    .cabecera__burger {
+        display: none; /* para que desaparezca en esta vista */
+    }
+    
+    .cabecera__nav {
+        width: 100%;
+        height: auto;
+        background-color: transparent;
+        position: static; /*quitamos position:fixed porque reseteamos esta propiedad*/
+        border-radius: none;
+        box-shadow: none;
+        padding-right: 48px; /* para separar los items de el buscador */
+    
+        display: flex; /* quitamos el display:none para que ahora sí aparezca el menú */
+        justify-content: end;
+        text-align: end;
+    }
+    
+    .cabecera__menu {
+        display: flex; /* para que los item del menú queden en horizontal */
+    }
+    
+    .cabecera__menu .menu-item {
+        margin: 0px;
+        margin-left: 48px;
+    }
+    
+    .cabecera__menu .menu-item > a {
+        color: var(--grey-900);
+        font: var(--lex-20-med);
+        
+        display: flex; /* estos ajustes son para que aparezca una rayita justo encima de los item del menú como para indicar que están clicados */
+        height: 68px;
+        align-items: center;
+    }
+
+    .cabecera__menu .menu-item > a:hover {
+        color: var(--primary); /* para que los item del menú cambien de color al pasar por encima */
+    }
+
+    .cabecera__menu .current-menu-item > a {
+        color: var(--primary); /* para que cuando estemos dentro de una sección, esta esté de color rojo como indicando que estamos ahí dentro */
+        box-shadow: 0 4px 0 var(--primary) inset; /* esto es justo el palito, se hace con sombra */
+    }
+
+    /* home LG*/
+    .heroe__imagen {
+        width: 370px;
+        margin-top: 20px;
+    }
+
+    .heroe__imagen::after {
+        width: 460px;
+        height: 170px;
+        left: -85px;
+    }
+
+    .heroe__titulo {
+        font-size: 50px;
+        line-height: 50px;
+        margin-bottom: 32px !important;
+        margin-top: 50px !important;
+    }
+
+    .intro__imagen > img {
+        width: 200px;
+    }
+
+    .intro__imagen--aprender {
+        translate: 25px;
+    }
+
+    .intro__imagen--comer {
+        height: 320px;
+    }
+
+    .intro__titulo {
+        font-size: 24px;
+    }
+
+
+    /* ERROR 404 LG */
+.body__image {
+    max-width: 1200px;
+    margin-left: 40%;
+}
+
+.titulo__error {
+    font-size: 70px;
+    font-family: 'Lexend Deca';
+}
+
+.grupo__error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 0px;
+    margin-bottom: 80px;
+}
+
+.texto__error1 {
+    font-size: 190px;
+    font-family: 'Lexend Deca', sans-serif;
+    translate: 10px;
+}
+
+.logo__error {
+    width: 190px;
+    height: 190px;
+}
+
+.texto__error2 {
+    font-size: 190px;
+    font-family: 'Lexend Deca', sans-serif;
+    translate: -10px;
+}
+
+.texto__back {
+    font-size: 30px;
+    font-family: 'Lexend Deca';
+    text-align: center;
+}
+
+.enlace__back {
+    font-size: 30px;
+    font-family: 'Lexend Deca';
+    color: var(--primary);
+}
+/*FIN ERROR 404 LG*/
+
+}/* FIN LG*/
+
+
+/* MEDIA XL */
+@media(min-width: 1200px) {
+    /* home xl */
+    .heroe__titulo {
+        font-size: 60px;
+        line-height: 60px;
+    }
+
+    .heroe__imagen {
+        width: 400px;
+    }
+    
+    .heroe__imagen::after {
+        width: 500px;
+        height: 200px;
+    }
+
+    .intro__imagen > img {
+        width: 180px;
+    }
+
+    .intro__titulo {
+        font-size: 27px;
+    }
+
+
+    /* aprender xl */
+    .aprender__card-contenido {
+        padding: 24px;
+    }
+
+    .intro__imagen > img {
+        width: 220px;
+    }
+}
+
+
+/* MEDIA XXL */
+@media(min-width: 1400px) {
+    
+    .container {
+        max-width: 1200px;
+    }
+
+}
+
